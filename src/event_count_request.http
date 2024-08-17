@@ -1,0 +1,23 @@
+### hello
+GET http://localhost:8080/
+Content-Type: application/json
+
+### event count
+POST http://localhost:8080/event/sum
+Content-Type: application/json
+
+{
+  "id": "user7",
+  "value": 10
+}
+
+### event query
+GET http://localhost:8080/event/query?id=user1
+Content-Type: application/json
+
+### monitor
+GET http://localhost:8080/monitor/stats
+Content-Type: application/json
+
+
+
