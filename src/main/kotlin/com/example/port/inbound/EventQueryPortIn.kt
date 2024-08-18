@@ -2,6 +2,6 @@ package com.example.port.inbound
 
 import com.example.entity.Event
 
-interface EventQueryPort {
+interface EventQueryPortIn {
     suspend fun query(id: String): List<Event>
 }

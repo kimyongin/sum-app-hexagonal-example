@@ -2,7 +2,7 @@ package com.example.port.inbound
 
 import com.example.entity.Event
 
-interface EventFilterPort {
+interface EventFilterPortIn {
     fun filter(event: Event): Boolean
 
 }

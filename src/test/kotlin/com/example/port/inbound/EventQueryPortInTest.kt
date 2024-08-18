@@ -2,23 +2,23 @@ package com.example.port.inbound
 
 import com.example.engine.EventProcessor
 import com.example.entity.Event
-import com.example.port.outbound.EventHistoryQueryPort
+import com.example.port.outbound.EventQueryPortOut
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-class EventQueryPortTest {
+class EventQueryPortInTest {
 
-    private lateinit var eventHistoryQueryPort: EventHistoryQueryPort
-    private lateinit var eventQueryPort: EventQueryPort
+    private lateinit var eventQueryPortOut: EventQueryPortOut
+    private lateinit var eventQueryPortIn: EventQueryPortIn
 
     @BeforeEach
     fun setUp() {
         // Mock 객체 초기화
-        eventHistoryQueryPort = mockk()
-        eventQueryPort = EventProcessor(eventHistoryQueryPort, mockk())
+        eventQueryPortOut = mockk()
+        eventQueryPortIn = EventProcessor(eventQueryPortOut, mockk())
     }
 
     @Test
@@ -30,13 +30,13 @@ class EventQueryPortTest {
             Event("1", 200L),
             Event("1", 300L)
         )
-        coEvery { eventHistoryQueryPort.query(id) } returns eventHistory
+        coEvery { eventQueryPortOut.query(id) } returns eventHistory
 
         // When: 테스트 대상 메서드 호출
-        val result = runBlocking { eventQueryPort.query(id) }
+        val result = runBlocking { eventQueryPortIn.query(id) }
 
         // Then: 결과 검증
-        coVerify { eventHistoryQueryPort.query(id) }
+        coVerify { eventQueryPortOut.query(id) }
         assertEquals(eventHistory, result)
     }
 }

@@ -1,12 +1,12 @@
 package com.example.adapter.outbound
 
 import com.example.entity.Event
-import com.example.port.outbound.EventHistoryQueryPort
-import com.example.port.outbound.EventHistorySavePort
+import com.example.port.outbound.EventQueryPortOut
+import com.example.port.outbound.EventSavePortOut
 import kotlinx.coroutines.*
 import java.io.File
 
-class EventHistoryRepository : EventHistoryQueryPort, EventHistorySavePort {
+class EventRepository : EventQueryPortOut, EventSavePortOut {
 
     companion object {
         const val EVENTS_FILE_PATH = "user_events/events.txt"

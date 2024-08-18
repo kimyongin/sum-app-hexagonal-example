@@ -2,8 +2,8 @@ package com.example
 
 import com.example.adapter.inbound.EventWebAdapter
 import com.example.adapter.inbound.MonitorWebAdapter
-import com.example.adapter.outbound.EventHistoryRepository
-import com.example.adapter.outbound.InterimResultRepository
+import com.example.adapter.outbound.EventRepository
+import com.example.adapter.outbound.ResultRepository
 import com.example.adapter.outbound.RuntimeRepository
 import com.example.engine.EventProcessor
 import com.example.engine.OperationProcessor
@@ -21,35 +21,35 @@ import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
 val appModule = module {
-    single { EventHistoryRepository() }
-    single<EventHistoryQueryPort> { get<EventHistoryRepository>() }
-    single<EventHistorySavePort> { get<EventHistoryRepository>() }
+    single { EventRepository() }
+    single<EventQueryPortOut> { get<EventRepository>() }
+    single<EventSavePortOut> { get<EventRepository>() }
 
-    single { InterimResultRepository() }
-    single<InterimResultLoadPort> { get<InterimResultRepository>() }
-    single<InterimResultSavePort> { get<InterimResultRepository>() }
-    single<StatCacheQueryPort> { get<InterimResultRepository>() }
+    single { ResultRepository() }
+    single<ResultLoadPortOut> { get<ResultRepository>() }
+    single<ResultSavePortOut> { get<ResultRepository>() }
+    single<StatCacheQueryPortOut> { get<ResultRepository>() }
 
     single { EventProcessor(get(), get()) }
-    single<EventFilterPort> { get<EventProcessor>() }
-    single<EventSavePort> { get<EventProcessor>() }
-    single<EventQueryPort> { get<EventProcessor>() }
+    single<EventFilterPortIn> { get<EventProcessor>() }
+    single<EventSavePortIn> { get<EventProcessor>() }
+    single<EventQueryPortIn> { get<EventProcessor>() }
 
     single { OperationProcessor() }
-    single<EventOperationPort> { get<OperationProcessor>() }
+    single<EventOperationPortIn> { get<OperationProcessor>() }
 
-    single { StatProcessor(get<StatCacheQueryPort>(), get<StatRuntimeQueryPort>()) }
-    single<StatQueryPort> { get<StatProcessor>() }
-    single<StatRuntimeQueryPort> { RuntimeRepository() }
+    single { StatProcessor(get<StatCacheQueryPortOut>(), get<StatRuntimeQueryPortOut>()) }
+    single<StatQueryPortIn> { get<StatProcessor>() }
+    single<StatRuntimeQueryPortOut> { RuntimeRepository() }
 
     single {
         EventWebAdapter(
-            get<EventFilterPort>(), get<EventSavePort>(), get<EventQueryPort>(),
-            get<EventOperationPort>(), get<EventHistoryQueryPort>(),
-            get<InterimResultLoadPort>(), get<InterimResultSavePort>()
+            get<EventFilterPortIn>(), get<EventSavePortIn>(), get<EventQueryPortIn>(),
+            get<EventOperationPortIn>(), get<EventQueryPortOut>(),
+            get<ResultLoadPortOut>(), get<ResultSavePortOut>()
         )
     }
-    single { MonitorWebAdapter(get<StatQueryPort>()) }
+    single { MonitorWebAdapter(get<StatQueryPortIn>()) }
 }
 
 fun Application.module() {

@@ -1,19 +1,19 @@
 package com.example.engine
 
 import com.example.entity.Event
-import com.example.port.inbound.EventFilterPort
-import com.example.port.inbound.EventQueryPort
-import com.example.port.inbound.EventSavePort
-import com.example.port.outbound.EventHistoryQueryPort
-import com.example.port.outbound.EventHistorySavePort
+import com.example.port.inbound.EventFilterPortIn
+import com.example.port.inbound.EventQueryPortIn
+import com.example.port.inbound.EventSavePortIn
+import com.example.port.outbound.EventQueryPortOut
+import com.example.port.outbound.EventSavePortOut
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 class EventProcessor(
-    private val eventHistoryQueryPort: EventHistoryQueryPort,
-    private val eventHistorySavePort: EventHistorySavePort,
-) : EventFilterPort, EventQueryPort, EventSavePort {
+    private val eventQueryPortOut: EventQueryPortOut,
+    private val eventSavePortOut: EventSavePortOut,
+) : EventFilterPortIn, EventQueryPortIn, EventSavePortIn {
 
     companion object {
         const val BUFFER_SIZE = 3
@@ -65,7 +65,7 @@ class EventProcessor(
         }
 
         // 잠금 해제 후 비동기 작업 실행
-        eventHistorySavePort.saveBatch(eventsToSave)
+        eventSavePortOut.saveBatch(eventsToSave)
 
         // 비동기 작업 완료 후 결과 처리
         deferredsToComplete.forEach { it.complete(Unit) }
@@ -79,6 +79,6 @@ class EventProcessor(
     }
 
     override suspend fun query(id: String): List<Event> = coroutineScope {
-        return@coroutineScope eventHistoryQueryPort.query(id)
+        eventQueryPortOut.query(id)
     }
 }

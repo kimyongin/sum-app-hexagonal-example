@@ -2,6 +2,6 @@ package com.example.port.outbound
 
 import com.example.entity.StatCache
 
-interface StatCacheQueryPort {
+interface StatCacheQueryPortOut {
     suspend fun query(): StatCache
 }

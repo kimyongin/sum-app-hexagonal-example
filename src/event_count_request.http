@@ -38,9 +38,8 @@ Content-Type: application/json
   "value": 4
 }
 
-
 ### event query
-GET http://localhost:8080/event/query?id=user7
+GET http://localhost:8080/event/query?id=user3
 Content-Type: application/json
 
 ### monitor

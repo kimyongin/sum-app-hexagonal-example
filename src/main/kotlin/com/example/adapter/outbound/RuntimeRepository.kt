@@ -1,9 +1,9 @@
 package com.example.adapter.outbound
 
-import com.example.port.outbound.StatRuntimeQueryPort
+import com.example.port.outbound.StatRuntimeQueryPortOut
 import com.example.entity.StatRuntime
 
-class RuntimeRepository : StatRuntimeQueryPort {
+class RuntimeRepository : StatRuntimeQueryPortOut {
     override suspend fun query(): StatRuntime {
         val totalMemory = Runtime.getRuntime().totalMemory()
         val freeMemory = Runtime.getRuntime().freeMemory()

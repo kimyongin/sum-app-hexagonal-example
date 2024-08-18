@@ -2,6 +2,6 @@ package com.example.port.outbound
 
 import com.example.entity.Event
 
-interface EventHistorySavePort {
+interface EventSavePortOut {
     suspend fun saveBatch(events: List<Event>)
 }

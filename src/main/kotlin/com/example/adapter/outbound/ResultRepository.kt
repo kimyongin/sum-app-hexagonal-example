@@ -2,13 +2,13 @@ package com.example.adapter.outbound
 
 import com.example.entity.Result
 import com.example.entity.StatCache
-import com.example.port.outbound.InterimResultLoadPort
-import com.example.port.outbound.StatCacheQueryPort
-import com.example.port.outbound.InterimResultSavePort
+import com.example.port.outbound.ResultLoadPortOut
+import com.example.port.outbound.StatCacheQueryPortOut
+import com.example.port.outbound.ResultSavePortOut
 import com.github.benmanes.caffeine.cache.Caffeine
 import java.util.concurrent.TimeUnit
 
-class InterimResultRepository : InterimResultLoadPort, InterimResultSavePort, StatCacheQueryPort {
+class ResultRepository : ResultLoadPortOut, ResultSavePortOut, StatCacheQueryPortOut {
     private val interimResultCache = Caffeine.newBuilder()
         .maximumSize(5)
         .expireAfterWrite(10, TimeUnit.MINUTES)

@@ -2,6 +2,6 @@ package com.example.port.inbound
 
 import com.example.entity.Stat
 
-interface StatQueryPort {
+interface StatQueryPortIn {
     suspend fun query(): Stat
 }
