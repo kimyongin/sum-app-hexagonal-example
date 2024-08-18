@@ -1,6 +1,7 @@
 package com.example.port.inbound
 
 import com.example.engine.EventProcessor
+import com.example.entity.Event
 import com.example.port.outbound.EventHistoryQueryPort
 import io.mockk.every
 import io.mockk.mockk
@@ -17,15 +18,18 @@ class EventQueryPortTest {
     @BeforeEach
     fun setUp() {
         eventHistoryQueryPort = mockk()
-        eventQueryPort = EventProcessor(eventHistoryQueryPort, mockk(), mockk(), mockk())
+        eventQueryPort = EventProcessor(eventHistoryQueryPort, mockk())
     }
 
     @Test
     fun `test queryEvent`() {
         // Given
         val id = "user1"
-        val eventHistory = listOf(100L, 200L, 300L)
-
+        val eventHistory = listOf(
+            Event("1", 100L),
+            Event("1", 200L),
+            Event("1", 300L)
+        )
         every { eventHistoryQueryPort.query(id) } returns eventHistory
 
         // When

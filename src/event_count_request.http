@@ -3,7 +3,7 @@ GET http://localhost:8080/
 Content-Type: application/json
 
 ### event count
-POST http://localhost:8080/event/sum
+POST http://localhost:8080/event/process
 Content-Type: application/json
 
 {

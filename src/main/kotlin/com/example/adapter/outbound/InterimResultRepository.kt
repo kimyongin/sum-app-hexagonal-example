@@ -1,5 +1,6 @@
 package com.example.adapter.outbound
 
+import com.example.entity.Result
 import com.example.entity.StatCache
 import com.example.port.outbound.InterimResultLoadPort
 import com.example.port.outbound.StatCacheQueryPort
@@ -12,15 +13,15 @@ class InterimResultRepository : InterimResultLoadPort, InterimResultSavePort, St
         .maximumSize(5)
         .expireAfterWrite(10, TimeUnit.MINUTES)
         .recordStats() // 통계 기록 활성화
-        .build<String, Long>()
+        .build<String, Result>()
 
     // 캐시에서 중간 집계값을 불러옴 (없으면 null 반환)
-    override fun load(id: String): Long? {
+    override fun load(id: String): Result? {
         return interimResultCache.getIfPresent(id)
     }
 
     // 중간 집계값을 캐시에 저장
-    override fun save(id: String, result: Long) {
+    override fun save(id: String, result: Result) {
         interimResultCache.put(id, result)
     }
 

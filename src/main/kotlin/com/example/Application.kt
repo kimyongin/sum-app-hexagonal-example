@@ -6,10 +6,9 @@ import com.example.adapter.outbound.EventHistoryRepository
 import com.example.adapter.outbound.InterimResultRepository
 import com.example.adapter.outbound.RuntimeRepository
 import com.example.engine.EventProcessor
+import com.example.engine.OperationProcessor
 import com.example.engine.StatProcessor
-import com.example.port.inbound.EventQueryPort
-import com.example.port.inbound.EventSumPort
-import com.example.port.inbound.StatQueryPort
+import com.example.port.inbound.*
 import com.example.port.outbound.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -31,15 +30,25 @@ val appModule = module {
     single<InterimResultSavePort> { get<InterimResultRepository>() }
     single<StatCacheQueryPort> { get<InterimResultRepository>() }
 
-    single { EventProcessor(get(), get(), get(), get()) }
-    single<EventSumPort> { get<EventProcessor>() }
+    single { EventProcessor(get(), get()) }
+    single<EventFilterPort> { get<EventProcessor>() }
+    single<EventSavePort> { get<EventProcessor>() }
     single<EventQueryPort> { get<EventProcessor>() }
+
+    single { OperationProcessor() }
+    single<EventOperationPort> { get<OperationProcessor>() }
 
     single { StatProcessor(get<StatCacheQueryPort>(), get<StatRuntimeQueryPort>()) }
     single<StatQueryPort> { get<StatProcessor>() }
     single<StatRuntimeQueryPort> { RuntimeRepository() }
 
-    single { EventWebAdapter(get<EventSumPort>(), get<EventQueryPort>()) }
+    single {
+        EventWebAdapter(
+            get<EventFilterPort>(), get<EventSavePort>(), get<EventQueryPort>(),
+            get<EventOperationPort>(), get<EventHistoryQueryPort>(),
+            get<InterimResultLoadPort>(), get<InterimResultSavePort>()
+        )
+    }
     single { MonitorWebAdapter(get<StatQueryPort>()) }
 }
 

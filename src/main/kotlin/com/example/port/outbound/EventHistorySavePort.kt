@@ -1,5 +1,7 @@
 package com.example.port.outbound
 
+import com.example.entity.Event
+
 interface EventHistorySavePort {
-    fun save(id: String, value: Long)
+    fun save(event: Event)
 }
