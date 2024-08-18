@@ -12,9 +12,9 @@ class EventHistoryRepository : EventHistoryQueryPort, EventHistorySavePort {
     // 이벤트 저장 (메모리와 파일에 저장)
     override fun save(event: Event) {
         eventStorage.computeIfAbsent(event.id) { mutableListOf() }.add(event.value)
-        val file = File("$storageDir/$event.id.txt")
+        val file = File("$storageDir/${event.id}.txt")
         file.parentFile.mkdirs()
-        file.appendText("$event.value\n")
+        file.appendText("${event.value}\n")
     }
 
     // 파일에서 이벤트 이력 불러오기

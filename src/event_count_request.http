@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 
 ### event query
-GET http://localhost:8080/event/query?id=user1
+GET http://localhost:8080/event/query?id=user7
 Content-Type: application/json
 
 ### monitor
