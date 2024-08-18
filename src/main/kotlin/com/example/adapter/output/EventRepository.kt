@@ -1,8 +1,8 @@
-package com.example.adapter.outbound
+package com.example.adapter.output
 
 import com.example.entity.Event
-import com.example.port.outbound.EventQueryPortOut
-import com.example.port.outbound.EventSavePortOut
+import com.example.port.output.EventQueryPortOut
+import com.example.port.output.EventSavePortOut
 import kotlinx.coroutines.*
 import java.io.File
 

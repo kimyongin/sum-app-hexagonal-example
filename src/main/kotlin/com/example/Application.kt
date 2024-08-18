@@ -1,15 +1,16 @@
 package com.example
 
-import com.example.adapter.inbound.EventWebAdapter
-import com.example.adapter.inbound.MonitorWebAdapter
-import com.example.adapter.outbound.EventRepository
-import com.example.adapter.outbound.ResultRepository
-import com.example.adapter.outbound.RuntimeRepository
+import com.example.adapter.input.EventWebAdapter
+import com.example.adapter.input.MonitorWebAdapter
+import com.example.adapter.output.EventRepository
+import com.example.adapter.output.ResultRepository
+import com.example.adapter.output.RuntimeRepository
 import com.example.engine.EventProcessor
 import com.example.engine.OperationProcessor
+import com.example.engine.ResultProcessor
 import com.example.engine.StatProcessor
-import com.example.port.inbound.*
-import com.example.port.outbound.*
+import com.example.port.input.*
+import com.example.port.output.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -31,9 +32,12 @@ val appModule = module {
     single<StatCacheQueryPortOut> { get<ResultRepository>() }
 
     single { EventProcessor(get(), get()) }
-    single<EventFilterPortIn> { get<EventProcessor>() }
     single<EventSavePortIn> { get<EventProcessor>() }
     single<EventQueryPortIn> { get<EventProcessor>() }
+
+    single { ResultProcessor(get(), get()) }
+    single<ResultSavePortIn> { get<ResultProcessor>() }
+    single<ResultLoadPortIn> { get<ResultProcessor>() }
 
     single { OperationProcessor() }
     single<EventOperationPortIn> { get<OperationProcessor>() }
@@ -44,9 +48,8 @@ val appModule = module {
 
     single {
         EventWebAdapter(
-            get<EventFilterPortIn>(), get<EventSavePortIn>(), get<EventQueryPortIn>(),
-            get<EventOperationPortIn>(), get<EventQueryPortOut>(),
-            get<ResultLoadPortOut>(), get<ResultSavePortOut>()
+            get<EventSavePortIn>(), get<EventQueryPortIn>(),
+            get<EventOperationPortIn>(), get<ResultLoadPortIn>(), get<ResultSavePortIn>()
         )
     }
     single { MonitorWebAdapter(get<StatQueryPortIn>()) }

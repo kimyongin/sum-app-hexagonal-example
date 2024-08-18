@@ -1,11 +1,10 @@
 package com.example.engine
 
 import com.example.entity.Event
-import com.example.port.inbound.EventFilterPortIn
-import com.example.port.inbound.EventQueryPortIn
-import com.example.port.inbound.EventSavePortIn
-import com.example.port.outbound.EventQueryPortOut
-import com.example.port.outbound.EventSavePortOut
+import com.example.port.input.EventQueryPortIn
+import com.example.port.input.EventSavePortIn
+import com.example.port.output.EventQueryPortOut
+import com.example.port.output.EventSavePortOut
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -13,7 +12,7 @@ import kotlinx.coroutines.sync.withLock
 class EventProcessor(
     private val eventQueryPortOut: EventQueryPortOut,
     private val eventSavePortOut: EventSavePortOut,
-) : EventFilterPortIn, EventQueryPortIn, EventSavePortIn {
+) : EventQueryPortIn, EventSavePortIn {
 
     companion object {
         const val BUFFER_SIZE = 3
@@ -25,10 +24,6 @@ class EventProcessor(
     private val deferredList = mutableListOf<CompletableDeferred<Unit>>()
     private var timerJob: Job? = null
     private val mutex = Mutex()
-
-    override fun filter(event: Event): Boolean {
-        return true
-    }
 
     override suspend fun save(event: Event): Deferred<Unit> {
         val deferred = CompletableDeferred<Unit>()

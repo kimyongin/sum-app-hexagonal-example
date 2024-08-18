@@ -1,4 +1,4 @@
-package com.example.port.inbound
+package com.example.port.input
 
 import com.example.entity.Stat
 

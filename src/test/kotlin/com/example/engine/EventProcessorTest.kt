@@ -1,7 +1,7 @@
 import com.example.engine.EventProcessor
 import com.example.entity.Event
-import com.example.port.outbound.EventQueryPortOut
-import com.example.port.outbound.EventSavePortOut
+import com.example.port.output.EventQueryPortOut
+import com.example.port.output.EventSavePortOut
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

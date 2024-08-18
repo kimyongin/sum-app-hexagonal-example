@@ -1,6 +1,6 @@
-package com.example.adapter.inbound
+package com.example.adapter.input
 
-import com.example.port.inbound.StatQueryPortIn
+import com.example.port.input.StatQueryPortIn
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*

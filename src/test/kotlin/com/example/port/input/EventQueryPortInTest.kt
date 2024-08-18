@@ -1,8 +1,8 @@
-package com.example.port.inbound
+package com.example.port.input
 
 import com.example.engine.EventProcessor
 import com.example.entity.Event
-import com.example.port.outbound.EventQueryPortOut
+import com.example.port.output.EventQueryPortOut
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach

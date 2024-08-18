@@ -1,4 +1,4 @@
-package com.example.port.outbound
+package com.example.port.output
 
 import com.example.entity.StatCache
 

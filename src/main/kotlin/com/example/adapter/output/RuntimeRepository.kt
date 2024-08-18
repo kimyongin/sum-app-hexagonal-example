@@ -1,6 +1,6 @@
-package com.example.adapter.outbound
+package com.example.adapter.output
 
-import com.example.port.outbound.StatRuntimeQueryPortOut
+import com.example.port.output.StatRuntimeQueryPortOut
 import com.example.entity.StatRuntime
 
 class RuntimeRepository : StatRuntimeQueryPortOut {

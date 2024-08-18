@@ -2,7 +2,7 @@ package com.example.engine
 
 import com.example.entity.Event
 import com.example.entity.Result
-import com.example.port.inbound.EventOperationPortIn
+import com.example.port.input.EventOperationPortIn
 
 class OperationProcessor(
 ) : EventOperationPortIn {

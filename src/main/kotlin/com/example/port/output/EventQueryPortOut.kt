@@ -1,7 +1,7 @@
-package com.example.port.inbound
+package com.example.port.output
 
 import com.example.entity.Event
 
-interface EventQueryPortIn {
+interface EventQueryPortOut {
     suspend fun query(id: String): List<Event>
 }
