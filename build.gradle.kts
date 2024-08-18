@@ -46,7 +46,8 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.0")
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
-    testImplementation("io.mockk:mockk:1.13.3") // Mockk 라이브러리 추가
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2") // JUnit Jupiter API 추가
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2") // JUnit Jupiter Engine 추가
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
+    testImplementation("io.mockk:mockk:1.13.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }

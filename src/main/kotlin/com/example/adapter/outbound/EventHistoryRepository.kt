@@ -3,24 +3,35 @@ package com.example.adapter.outbound
 import com.example.entity.Event
 import com.example.port.outbound.EventHistoryQueryPort
 import com.example.port.outbound.EventHistorySavePort
+import kotlinx.coroutines.*
 import java.io.File
 
 class EventHistoryRepository : EventHistoryQueryPort, EventHistorySavePort {
-    private val eventStorage = mutableMapOf<String, MutableList<Long>>()
-    private val storageDir = "user_events"
 
-    // 이벤트 저장 (메모리와 파일에 저장)
-    override fun save(event: Event) {
-        eventStorage.computeIfAbsent(event.id) { mutableListOf() }.add(event.value)
-        val file = File("$storageDir/${event.id}.txt")
-        file.parentFile.mkdirs()
-        file.appendText("${event.value}\n")
+    companion object {
+        const val EVENTS_FILE_PATH = "user_events/events.txt"
+    }
+    private val eventStorage = mutableMapOf<String, MutableList<Long>>()
+
+    override suspend fun saveBatch(events: List<Event>) {
+        val fileContent = StringBuilder()
+        events.forEach { event ->
+            eventStorage.computeIfAbsent(event.id) { mutableListOf() }.add(event.value)
+            fileContent.append("${event.id},${event.value}\n")
+        }
+        val file = File(EVENTS_FILE_PATH)
+        file.parentFile?.mkdirs()
+        file.appendText(fileContent.toString())
     }
 
-    // 파일에서 이벤트 이력 불러오기
-    override fun query(id: String): List<Event> {
-        val file = File("$storageDir/$id.txt")
-        if (!file.exists()) return emptyList()
-        return file.readLines().map { Event(id, it.toLong()) }
+    override suspend fun query(id: String): List<Event> {
+        return withContext(Dispatchers.IO) {
+            val file = File(EVENTS_FILE_PATH)
+            if (!file.exists()) return@withContext emptyList()
+            file.readLines()
+                .map { it.split(",") }
+                .filter { it[0] == id }
+                .map { Event(it[0], it[1].toLong()) }
+        }
     }
 }

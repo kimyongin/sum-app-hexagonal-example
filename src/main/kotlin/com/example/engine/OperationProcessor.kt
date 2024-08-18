@@ -14,7 +14,7 @@ class OperationProcessor(
             Result(interimResult.result + newEvent.value)
         } else {
             // 중간 집계값이 없으면 이벤트 이력의 갯수로 전체 집계
-            Result(eventHistory.sumOf { it.value } + newEvent.value)
+            Result(eventHistory.sumOf { it.value })
         }
     }
 }

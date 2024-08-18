@@ -1,8 +1,8 @@
 package com.example.port.inbound
 
 import com.example.entity.Event
+import kotlinx.coroutines.Deferred
 
 interface EventSavePort {
-    fun save(event: Event)
-
+    suspend fun save(event: Event): Deferred<Unit>
 }

@@ -2,14 +2,42 @@
 GET http://localhost:8080/
 Content-Type: application/json
 
-### event count
+### event count - user1
 POST http://localhost:8080/event/process
 Content-Type: application/json
 
 {
-  "id": "user7",
-  "value": 10
+  "id": "user1",
+  "value": 1
 }
+
+### event count - user2
+POST http://localhost:8080/event/process
+Content-Type: application/json
+
+{
+  "id": "user2",
+  "value": 2
+}
+
+### event count - user3
+POST http://localhost:8080/event/process
+Content-Type: application/json
+
+{
+  "id": "user3",
+  "value": 3
+}
+
+### event count - user4
+POST http://localhost:8080/event/process
+Content-Type: application/json
+
+{
+  "id": "user4",
+  "value": 4
+}
+
 
 ### event query
 GET http://localhost:8080/event/query?id=user7

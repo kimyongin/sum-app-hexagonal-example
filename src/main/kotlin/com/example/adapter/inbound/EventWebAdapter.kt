@@ -14,6 +14,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.coroutineScope
 
 class EventWebAdapter(
     private val eventFilterPort: EventFilterPort,
@@ -25,12 +26,12 @@ class EventWebAdapter(
     private val interimResultSavePort: InterimResultSavePort
 ) {
 
-    fun eventProcess(event: Event): Result? {
+    suspend fun eventProcess(event: Event): Result? = coroutineScope {
         if (!eventFilterPort.filter(event)) {
-            return null
+            return@coroutineScope null
         }
         // 이벤트 저장
-        eventSavePort.save(event)
+        eventSavePort.save(event).await()
         // 캐시에서 중간 집계값을 불러옴
         val interimResult = interimResultLoadPort.load(event.id)
         // 중간 집계값이 없으면 이벤트 이력을 불러옴
@@ -44,7 +45,7 @@ class EventWebAdapter(
         // 새로운 집계값을 캐시에 저장
         interimResultSavePort.save(event.id, newResult)
         // 새로운 집계값과 캐시 히트 여부 반환
-        return newResult
+        return@coroutineScope newResult
     }
 
     fun setupRoutes(application: Application) {
